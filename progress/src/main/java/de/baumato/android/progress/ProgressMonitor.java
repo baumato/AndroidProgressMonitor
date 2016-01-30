@@ -42,7 +42,6 @@ package de.baumato.android.progress;
  * delegated to a separate thread).
  * </p>
  * Clients may implement this interface.
- * </p>
  */
 public interface ProgressMonitor {
 
