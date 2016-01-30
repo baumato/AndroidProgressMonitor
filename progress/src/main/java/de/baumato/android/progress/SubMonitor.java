@@ -21,9 +21,8 @@ package de.baumato.android.progress;
 import static de.baumato.android.progress.ProgressMonitorUtil.equal;
 
 /**
- * <p>A progress monitor that uses a given amount of work ticks from a parent monitor. This is intended as a
- * safer, easier-to-use alternative to SubProgressMonitor. The main benefits of SubMonitor over
- * SubProgressMonitor are:</p>
+ * <p>A progress monitor that uses a given amount of work ticks from a parent monitor.
+ * The main benefits of SubMonitor are:</p>
  * <ul>
  * <li>It is not necessary to call beginTask() or done() on an instance of SubMonitor.</li>
  * <li>SubMonitor has a simpler syntax for creating nested monitors.</li>
