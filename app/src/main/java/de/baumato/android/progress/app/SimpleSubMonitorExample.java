@@ -64,7 +64,7 @@ class SimpleSubMonitorExample extends AsyncTask<Void, Void, String> {
   }
 
   private String doSomethingElse(SubMonitor progress) {
-    doSomethingElse(progress);
+    doSomething(progress);
     simulateHardWork();
     progress.worked(10);
     return "done";
