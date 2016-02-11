@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         case R.id.rbLoop:
           new LoopExample(progressMonitor).execute();
+          break;
 
         case R.id.rbUnknownLoop:
           new UnknownNumberOfElementsExample(progressMonitor).execute();

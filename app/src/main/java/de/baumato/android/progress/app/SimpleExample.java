@@ -32,7 +32,7 @@ class SimpleExample extends AsyncTask<Void, Void, String> {
     // Convert the monitor into a SubMonitor progress instance, no need to call beginTask.
     // 100 is the total number of work units into which the main task gets subdivided.
     // Eventually call the monitor's done method.
-    monitor.beginTask("Background-Job", 100);
+    monitor.beginTask("Simple Example", 100);
     try {
       for (int i = 1; i <= 10; i++) {
         // Notifies that a subtask of the main task is beginning. The subtask name gets appended

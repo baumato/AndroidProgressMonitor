@@ -29,7 +29,7 @@ class ConditionExample extends AsyncTask<Void, Void, String> {
   protected String doInBackground(Void... params) {
     // Convert the monitor into a SubMonitor progress instance, no need to call beginTask.
     // 100 is the total number of work units into which the main task gets subdivided.
-    SubMonitor progress = SubMonitor.convert(monitor, "Background-Job", 100);
+    SubMonitor progress = SubMonitor.convert(monitor, "Condition Example", 100);
     try {
       if (condition()) {
         // Use 50% of the progress to do some work,

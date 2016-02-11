@@ -25,7 +25,7 @@ public class LoopExample extends AsyncTask<Void, Void, String> {
   protected String doInBackground(Void... params) {
     // Convert the monitor into a SubMonitor progress instance, no need to call beginTask.
     // 100 is the total number of work units into which the main task is been subdivided.
-    SubMonitor progress = SubMonitor.convert(monitor, "Background-Job", 100);
+    SubMonitor progress = SubMonitor.convert(monitor, "Loop Example", 100);
     try {
       Collection<String> elements = createElements();
 
