@@ -14,15 +14,15 @@ package de.baumato.android.progress;
 
 /**
  * The <code>ProgressMonitor</code> interface is implemented
- * by objects that monitor the progress of an activity; the methods
- * in this interface are invoked by code that performs the activity.
+ * by objects that monitor the progress of a task; the methods
+ * in this interface are invoked by code that performs the task.
  * <p>
- * All activity is broken down into a linear sequence of tasks against
+ * A task is broken down into a linear sequence of work items against
  * which progress is reported. When a task begins, a <code>beginTask(String, int)
  * </code> notification is reported, followed by any number and mixture of
  * progress reports (<code>worked()</code>) and subtask notifications
  * (<code>subTask(String)</code>).  When the task is eventually completed, a
- * <code>done()</code> notification is reported.  After the <code>done()</code>
+ * <code>done()</code> notification is reported. After the <code>done()</code>
  * notification, the progress monitor cannot be reused;  i.e., <code>
  * beginTask(String, int)</code> cannot be called again after the call to
  * <code>done()</code>.
@@ -31,11 +31,11 @@ package de.baumato.android.progress;
  * A request to cancel an operation can be signaled using the
  * <code>setCanceled</code> method.  Operations taking a progress
  * monitor are expected to poll the monitor (using <code>isCanceled</code>)
- * periodically and abort at their earliest convenience. Operatiosn can however
- * choose to ignore cancelation requests.
+ * periodically and abort at their earliest convenience. Operations can however
+ * choose to ignore cancellation requests.
  * </p>
  * <p>
- * Since notification is synchronous with the activity itself, the listener should
+ * Since notification is synchronous with the task itself, the listener should
  * provide a fast and robust implementation. If the handling of notifications would
  * involve blocking operations, or operations which might throw uncaught exceptions,
  * the notifications should be queued, and the actual processing deferred (or perhaps
