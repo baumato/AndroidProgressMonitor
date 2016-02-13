@@ -1,10 +1,12 @@
 package de.baumato.android.progress.app;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import de.baumato.android.progress.OperationCanceledException;
 import de.baumato.android.progress.ProgressMonitor;
@@ -42,9 +44,13 @@ class UnknownNumberOfElementsExample extends AsyncTask<Void, Void, String> {
       // looping thru the unknown number of elements is 80% of the work.
       SubMonitor loopProgress = progress.split(80);
 
+      int count = 0;
+
       while (unknownNumberOfElemsIter.hasNext()) {
 
         String elem = unknownNumberOfElemsIter.next();
+
+        Log.i(UnknownNumberOfElementsExample.class.getName(), "Elem " + count++);
 
         /*
          * Regardless of the amount of progress reported so far,
@@ -66,17 +72,18 @@ class UnknownNumberOfElementsExample extends AsyncTask<Void, Void, String> {
       return doSomethingElse(progress.split(10));
 
     } catch (OperationCanceledException e) {
-      // user cancelled the operation, in this example I do not want to handle that
+      return "cancelled";
     } finally {
       monitor.done();
     }
-    return "done";
   }
 
   private Iterator<String> createIterator() {
     List<String> res = new ArrayList<>();
-    for (int i = 1; i <= random(10000, 50000); i++) {
-      res.add(String.valueOf((char) random(97, 121)));
+    int count = random(10000, 50000);
+    Log.d(UnknownNumberOfElementsExample.class.getName(), "createiterator count=" + count);
+    for (int i = 0; i < count; i++) {
+      res.add(String.valueOf(i+1));
     }
     return res.iterator();
   }
@@ -87,7 +94,11 @@ class UnknownNumberOfElementsExample extends AsyncTask<Void, Void, String> {
   }
 
   private void doWorkOnElement(String element, SubMonitor progress) {
-    simulateHardWorkByWaitingMillis(10);
+    try {
+      TimeUnit.NANOSECONDS.sleep(1);
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   private String doSomethingElse(SubMonitor progress) {

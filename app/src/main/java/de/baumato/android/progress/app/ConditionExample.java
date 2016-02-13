@@ -58,9 +58,9 @@ class ConditionExample extends AsyncTask<Void, Void, String> {
     // This is a loop example.
     // Reserve another 5000 ticks for this monitor.
     SubMonitor progress = SubMonitor.convert(monitor, 5000);
-    for (int i = 1; i <= 500; i++) {
-      simulateHardWorkByWaitingMillis(10);
-      progress.worked(1);
+    for (int i = 0; i < 50; i++) {
+      simulateHardWorkByWaitingMillis(100);
+      progress.worked(100);
     }
   }
 }
