@@ -44,13 +44,9 @@ class UnknownNumberOfElementsExample extends AsyncTask<Void, Void, String> {
       // looping thru the unknown number of elements is 80% of the work.
       SubMonitor loopProgress = progress.split(80);
 
-      int count = 0;
-
       while (unknownNumberOfElemsIter.hasNext()) {
 
         String elem = unknownNumberOfElemsIter.next();
-
-        Log.i(UnknownNumberOfElementsExample.class.getName(), "Elem " + count++);
 
         /*
          * Regardless of the amount of progress reported so far,
