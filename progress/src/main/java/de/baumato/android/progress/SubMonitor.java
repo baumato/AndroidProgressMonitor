@@ -14,7 +14,7 @@
  * Stefan Xenos (Google) - bug 476924 - Add a SUPPRESS_ISCANCELED flag to SubMonitor
  * IBM Corporation - ongoing maintenance
  * Tobias Baumann - initial adaption of equinox SubMonitor to android,
- * original file: https://git.io/vz9n1
+ *                  original file: https://git.io/vz9n1
  *******************************************************************************/
 package de.baumato.android.progress;
 
