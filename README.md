@@ -10,6 +10,16 @@ It is very helpful in situations when
 
 This library adapts the clever [ProgressMonitor](https://git.io/vz9n0) and [SubMonitor](https://git.io/vz9n1)
  of eclipse equinox to android.
+ 
+**Table of Contents**
+- [Example app](#)
+- [Examples](#)
+	- [Simple example](#)
+	- [Condition example](#)
+	- [Loop example](#)
+	- [Unknown number of elements example](#)
+- [Usage](#)
+- [License](#)
 
 # Example app
 
@@ -203,4 +213,7 @@ Add following line to your dependencies in your app's build.gradle file:
 compile 'de.baumato.android.progress:progress:1.0.1@aar'
 ```
 
+# License
+
+[Eclipse Public License - v 1.0](LICENSE)
 
