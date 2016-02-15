@@ -218,7 +218,7 @@ compile 'de.baumato.android.progress:progress:1.0.1@aar'
 All rights reserved. This program and the accompanying materials
 are made available under the terms of the Eclipse Public License v1.0
 which accompanies this distribution, and is available at
-http://www.eclipse.org/legal/epl-v10.html
+http://www.eclipse.org/legal/epl-v10.html.
 
 * [Eclipse Public License - v 1.0](https://www.eclipse.org/legal/epl-v10.html)
 * [Short license explanation on choosealicense](http://choosealicense.com/licenses/epl-1.0/)
