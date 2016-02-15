@@ -215,5 +215,5 @@ compile 'de.baumato.android.progress:progress:1.0.1@aar'
 
 # License
 
-[Eclipse Public License - v 1.0](LICENSE)
+[Eclipse Public License - v 1.0](https://www.eclipse.org/legal/epl-v10.html)
 
