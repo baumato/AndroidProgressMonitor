@@ -221,7 +221,7 @@ which accompanies this distribution, and is available at
 http://www.eclipse.org/legal/epl-v10.html.
 
 * [Eclipse Public License - v 1.0](https://www.eclipse.org/legal/epl-v10.html)
-* [Short license explanation on choosealicense](http://choosealicense.com/licenses/epl-1.0/)
+* [Short license explanation on choosealicense.com](http://choosealicense.com/licenses/epl-1.0/)
 * [EPL FAQ](https://eclipse.org/legal/eplfaq.php)
 
 
