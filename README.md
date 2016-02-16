@@ -210,7 +210,7 @@ allprojects {
 Add following line to your dependencies in your app's build.gradle file:
 
 ```gradle
-compile 'de.baumato.android.progress:progress:1.0.1@aar'
+compile 'de.baumato.android.progress:progress:1.0.2@aar'
 ```
 
 ## License
