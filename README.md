@@ -12,8 +12,8 @@ This library adapts the clever [ProgressMonitor](https://git.io/vz9n0) and [SubM
  of eclipse equinox to android.
 
 **Table of Contents**
-- [Example app](#)
-- [Examples](#)
+- [Example app](#Example app)
+- [Examples](#Examples)
 	- [Simple example](#)
 	- [Condition example](#)
 	- [Loop example](#)
@@ -31,7 +31,7 @@ An example app showing different use cases is included in this repository.
 
 All following examples assume that you have an activity with a ProgressBar and optionally a
  TextField that will show the name of the task you want to monitor.
- 
+
 In your activity, add following members:
 
 ```java
@@ -84,7 +84,7 @@ protected String doInBackground(Void... params) {
   }
 }
 ```
- 
+
 ### Condition example
 
 This example demonstrates how to smoothly report progress in situations where some of the work is optional. This task is not cancellable.
