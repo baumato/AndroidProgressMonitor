@@ -14,12 +14,12 @@ This library adapts the clever [ProgressMonitor](https://git.io/vz9n0) and [SubM
 **Table of Contents**
 - [Example app](#example-app)
 - [Examples](#examples)
-	- [Simple example](#)
-	- [Condition example](#)
-	- [Loop example](#)
-	- [Unknown number of elements example](#)
-- [Usage](#)
-- [License](#)
+	- [Simple example](#simple-example)
+	- [Condition example](#condition-example)
+	- [Loop example](#loop-example)
+	- [Unknown number of elements example](#unknown-number-of-elements-example)
+- [Usage](#usage)
+- [License](#license)
 
 ## Example app
 
