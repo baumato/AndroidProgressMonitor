@@ -12,8 +12,8 @@ This library adapts the clever [ProgressMonitor](https://git.io/vz9n0) and [SubM
  of eclipse equinox to android.
 
 **Table of Contents**
-- [Example app](#Example app)
-- [Examples](#Examples)
+- [Example app](#example-app)
+- [Examples](#examples)
 	- [Simple example](#)
 	- [Condition example](#)
 	- [Loop example](#)
