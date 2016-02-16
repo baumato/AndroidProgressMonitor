@@ -10,7 +10,7 @@ It is very helpful in situations when
 
 This library adapts the clever [ProgressMonitor](https://git.io/vz9n0) and [SubMonitor](https://git.io/vz9n1)
  of eclipse equinox to android.
- 
+
 **Table of Contents**
 - [Example app](#)
 - [Examples](#)
@@ -58,31 +58,31 @@ new SimpleExample(progressMonitor).execute();
 
 ```java
 @Override
-  protected String doInBackground(Void... params) {
-    // Convert the monitor into a SubMonitor progress instance, no need to call beginTask.
-    // 100 is the total number of work units into which the main task gets subdivided.
-    // Eventually call the monitor's done method.
-    SubMonitor progress = SubMonitor.convert(monitor, "Simple SubMonitor Example", 100);
-    try {
-      // Use 30% of the progress to do some work.
-      // split checks frequently if user has cancelled the operation.
-      // Use newChild if you do not want to allow cancellations.
-      doSomething(progress.split(30));
+protected String doInBackground(Void... params) {
+  // Convert the monitor into a SubMonitor progress instance, no need to call beginTask.
+  // 100 is the total number of work units into which the main task gets subdivided.
+  // Eventually call the monitor's done method.
+  SubMonitor progress = SubMonitor.convert(monitor, "Simple SubMonitor Example", 100);
+  try {
+    // Use 30% of the progress to do some work.
+    // split checks frequently if user has cancelled the operation.
+    // Use newChild if you do not want to allow cancellations.
+    doSomething(progress.split(30));
 
-      // Advance the monitor by another 30%.
-      progress.worked(30);
+    // Advance the monitor by another 30%.
+    progress.worked(30);
 
-      // Use the remaining 40% of the progress to do some more work.
-      return doSomethingElse(progress.split(40));
+    // Use the remaining 40% of the progress to do some more work.
+    return doSomethingElse(progress.split(40));
 
-    } catch (OperationCanceledException e) {
-      return "cancelled";
+  } catch (OperationCanceledException e) {
+    return "cancelled";
 
-    } finally {
-      // Notifies that the work is done;that is, either the main task is completed or the user canceled it.
-      monitor.done();
-    }
+  } finally {
+    // Notifies that the work is done;that is, either the main task is completed or the user canceled it.
+    monitor.done();
   }
+}
 ```
  
 ## Condition example
@@ -91,56 +91,56 @@ This example demonstrates how to smoothly report progress in situations where so
 
 ```java
 @Override
-  protected String doInBackground(Void... params) {
-    // Convert the monitor into a SubMonitor progress instance, no need to call beginTask.
-    // 100 is the total number of work units into which the main task gets subdivided.
-    SubMonitor progress = SubMonitor.convert(monitor, "Condition Example", 100);
-    try {
-      if (condition()) {
-        // Use 50% of the progress to do some work,
-        doSomeWork(progress.newChild(50));
-      }
-
-      // Don't report any work, but ensure that we have 50 ticks remaining on the progress monitor.
-      // If we already consumed 50 ticks in the above branch, this is a no-op.
-      // Otherwise, the remaining  space in the monitor is redistributed into 50 ticks.
-      progress.setWorkRemaining(50);
-
-      // Use the remainder of the progress monitor to do the rest of the work.
+protected String doInBackground(Void... params) {
+  // Convert the monitor into a SubMonitor progress instance, no need to call beginTask.
+  // 100 is the total number of work units into which the main task gets subdivided.
+  SubMonitor progress = SubMonitor.convert(monitor, "Condition Example", 100);
+  try {
+    if (condition()) {
+      // Use 50% of the progress to do some work,
       doSomeWork(progress.newChild(50));
-
-    } finally {
-      monitor.done();
     }
-    return "done";
+
+    // Don't report any work, but ensure that we have 50 ticks remaining on the progress monitor.
+    // If we already consumed 50 ticks in the above branch, this is a no-op.
+    // Otherwise, the remaining  space in the monitor is redistributed into 50 ticks.
+    progress.setWorkRemaining(50);
+
+    // Use the remainder of the progress monitor to do the rest of the work.
+    doSomeWork(progress.newChild(50));
+
+  } finally {
+    monitor.done();
   }
+  return "done";
+}
 ```
 
 ## Loop example
 
 ```java
 @Override
-  protected String doInBackground(Void... params) {
-    // Convert the monitor into a SubMonitor progress instance, no need to call beginTask.
-    // 100 is the total number of work units into which the main task is been subdivided.
-    SubMonitor progress = SubMonitor.convert(monitor, "Loop Example", 100);
-    try {
-      Collection<String> elements = createElements();
+protected String doInBackground(Void... params) {
+  // Convert the monitor into a SubMonitor progress instance, no need to call beginTask.
+  // 100 is the total number of work units into which the main task is been subdivided.
+  SubMonitor progress = SubMonitor.convert(monitor, "Loop Example", 100);
+  try {
+    Collection<String> elements = createElements();
 
-      // Create a new progress monitor that uses 70% of the total progress and will allocate one
-      // tick for each element of the given collection.
-      SubMonitor loopProgress = progress.split(70).setWorkRemaining(elements.size());
+    // Create a new progress monitor that uses 70% of the total progress and will allocate one
+    // tick for each element of the given collection.
+    SubMonitor loopProgress = progress.split(70).setWorkRemaining(elements.size());
 
-      for (String elem : elements) {
-        doWorkOnElement(elem, loopProgress.split(1));
-      }
-
-      // Use the remaining 30% of the progress monitor to do some work outside the loop
-      return doSomethingElse(progress.split(30));
-    } finally {
-      monitor.done();
+    for (String elem : elements) {
+      doWorkOnElement(elem, loopProgress.split(1));
     }
+
+    // Use the remaining 30% of the progress monitor to do some work outside the loop
+    return doSomethingElse(progress.split(30));
+  } finally {
+    monitor.done();
   }
+}
 ```
 
 ## Unknown number of elements example
@@ -149,47 +149,47 @@ This example demonstrates how to report logarithmic progress in situations where
 
 ```java
 @Override
-  protected String doInBackground(Void... params) {
-    try {
-      SubMonitor progress = SubMonitor.convert(monitor, "Unknown number of elements example", 100);
+protected String doInBackground(Void... params) {
+  try {
+    SubMonitor progress = SubMonitor.convert(monitor, "Unknown number of elements example", 100);
 
-      Iterator<String> unknownNumberOfElemsIter = createIterator();
+    Iterator<String> unknownNumberOfElemsIter = createIterator();
 
-      // creating the iterator is 10% of the task.
-      progress.worked(10);
+    // creating the iterator is 10% of the task.
+    progress.worked(10);
 
-      // looping thru the unknown number of elements is 80% of the work.
-      SubMonitor loopProgress = progress.split(80);
+    // looping thru the unknown number of elements is 80% of the work.
+    SubMonitor loopProgress = progress.split(80);
 
-      while (unknownNumberOfElemsIter.hasNext()) {
+    while (unknownNumberOfElemsIter.hasNext()) {
 
-        String elem = unknownNumberOfElemsIter.next();
+      String elem = unknownNumberOfElemsIter.next();
 
-        /*
-         * Regardless of the amount of progress reported so far,
-         * use 0.01% of the space remaining in the monitor to process the next element.
-         */
-        loopProgress.setWorkRemaining(10000);
+      /*
+       * Regardless of the amount of progress reported so far,
+       * use 0.01% of the space remaining in the monitor to process the next element.
+       */
+      loopProgress.setWorkRemaining(10000);
 
-        /*
-         * Creates a sub progress monitor that will consume the given number of ticks from the
-         * receiver. split will check for cancellation and will throw an OperationCanceledException
-         * if the monitor has been cancelled. If no cancellation check is needed, use newChild
-         * method.
-         */
-        doWorkOnElement(elem, loopProgress.split(1));
-      }
-
-      // calling split on progress automatically finishes the loopProgress.
-      // do something else are the last 10% of the work
-      return doSomethingElse(progress.split(10));
-
-    } catch (OperationCanceledException e) {
-      return "cancelled";
-    } finally {
-      monitor.done();
+      /*
+       * Creates a sub progress monitor that will consume the given number of ticks from the
+       * receiver. split will check for cancellation and will throw an OperationCanceledException
+       * if the monitor has been cancelled. If no cancellation check is needed, use newChild
+       * method.
+       */
+      doWorkOnElement(elem, loopProgress.split(1));
     }
+
+    // calling split on progress automatically finishes the loopProgress.
+    // do something else are the last 10% of the work
+    return doSomethingElse(progress.split(10));
+
+  } catch (OperationCanceledException e) {
+    return "cancelled";
+  } finally {
+    monitor.done();
   }
+}
 ```
 
 # Usage
@@ -223,5 +223,3 @@ http://www.eclipse.org/legal/epl-v10.html.
 * [Eclipse Public License - v 1.0](https://www.eclipse.org/legal/epl-v10.html)
 * [Short license explanation on choosealicense.com](http://choosealicense.com/licenses/epl-1.0/)
 * [EPL FAQ](https://eclipse.org/legal/eplfaq.php)
-
-
