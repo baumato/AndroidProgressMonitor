@@ -21,13 +21,13 @@ This library adapts the clever [ProgressMonitor](https://git.io/vz9n0) and [SubM
 - [Usage](#)
 - [License](#)
 
-# Example app
+## Example app
 
 An example app showing different use cases is included in this repository.
 
 ![ProgressExample](https://raw.githubusercontent.com/baumato/AndroidProgressMonitor/master/doc/ProgressExample.gif)
 
-# Examples
+## Examples
 
 All following examples assume that you have an activity with a ProgressBar and optionally a
  TextField that will show the name of the task you want to monitor.
@@ -54,7 +54,7 @@ Somewhere start your async task like:
 new SimpleExample(progressMonitor).execute();
 ```
 
-## Simple example
+### Simple example
 
 ```java
 @Override
@@ -85,7 +85,7 @@ protected String doInBackground(Void... params) {
 }
 ```
  
-## Condition example
+### Condition example
 
 This example demonstrates how to smoothly report progress in situations where some of the work is optional. This task is not cancellable.
 
@@ -116,7 +116,7 @@ protected String doInBackground(Void... params) {
 }
 ```
 
-## Loop example
+### Loop example
 
 ```java
 @Override
@@ -143,7 +143,7 @@ protected String doInBackground(Void... params) {
 }
 ```
 
-## Unknown number of elements example
+### Unknown number of elements example
 
 This example demonstrates how to report logarithmic progress in situations where the number of ticks cannot be easily computed in advance.
 
@@ -192,7 +192,7 @@ protected String doInBackground(Void... params) {
 }
 ```
 
-# Usage
+## Usage
 
 In your top level build file, add a repository containing this library:
 
@@ -213,7 +213,7 @@ Add following line to your dependencies in your app's build.gradle file:
 compile 'de.baumato.android.progress:progress:1.0.1@aar'
 ```
 
-# License
+## License
 
 All rights reserved. This program and the accompanying materials
 are made available under the terms of the Eclipse Public License v1.0
