@@ -208,6 +208,8 @@ compile 'de.baumato.android.progress:progress:1.0.2@aar'
 
 ## License
 
+[ ![License](https://img.shields.io/badge/license-Eclipse-brightgreen.svg) ](http://choosealicense.com/licenses/epl-1.0/)
+
 All rights reserved. This program and the accompanying materials
 are made available under the terms of the Eclipse Public License v1.0
 which accompanies this distribution, and is available at
