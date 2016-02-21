@@ -194,20 +194,7 @@ protected String doInBackground(Void... params) {
 
 ## Usage
 
-In your top level build file, add a repository containing this library:
-
-```gradle
-allprojects {
-    repositories {
-        jcenter()
-        maven {
-            url 'https://dl.bintray.com/baumato/maven'
-        }
-    }
-}
-```
-
-Add following line to your dependencies in your app's build.gradle file:
+Add following line to your dependencies in your app's build.gradle file (it is available in jcenter):
 
 ```gradle
 compile 'de.baumato.android.progress:progress:1.0.2@aar'
