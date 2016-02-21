@@ -1,3 +1,5 @@
+[ ![Download](https://api.bintray.com/packages/baumato/maven/de.baumato.android.progress/images/download.svg) ](https://bintray.com/baumato/maven/de.baumato.android.progress/_latestVersion)
+
 # AndroidProgressMonitor
 
 This android library allows to smoothly report progress of tasks.
@@ -194,7 +196,9 @@ protected String doInBackground(Void... params) {
 
 ## Usage
 
-Add following line to your dependencies in your app's build.gradle file (it is available in jcenter):
+[ ![Download](https://api.bintray.com/packages/baumato/maven/de.baumato.android.progress/images/download.svg) ](https://bintray.com/baumato/maven/de.baumato.android.progress/_latestVersion)
+
+or add following line to your dependencies in your app's build.gradle file (it is available in jcenter):
 
 ```gradle
 compile 'de.baumato.android.progress:progress:1.0.2@aar'
