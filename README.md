@@ -1,4 +1,6 @@
 [ ![Download](https://api.bintray.com/packages/baumato/maven/de.baumato.android.progress/images/download.svg) ](https://bintray.com/baumato/maven/de.baumato.android.progress/_latestVersion)
+[ ![License](https://img.shields.io/badge/license-Eclipse-brightgreen.svg) ](https://www.eclipse.org/legal/epl-v10.html)
+
 
 # AndroidProgressMonitor
 
