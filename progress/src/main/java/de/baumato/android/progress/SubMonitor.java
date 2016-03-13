@@ -535,10 +535,20 @@ public final class SubMonitor implements ProgressMonitor {
 
   @Override
   public boolean isCanceled() {
-    if ((flags & SUPPRESS_ISCANCELED) == 0) {
-      return root.isCanceled();
+    return (flags & SUPPRESS_ISCANCELED) == 0 && root.isCanceled();
+  }
+
+  /**
+   * Throws an {@link OperationCanceledException} in case the task
+   * {@link #isCanceled has been cancelled}. This method may be expensive when called to frequently.
+   * If you want to check for cancellation in loops  or very frequently for another reason,
+   * then consider to use {@link #split} method instead. {@link #split} checks for cancellation
+   * automatically.
+   */
+  public void checkForCancellation() {
+    if (isCanceled()) {
+      throw new OperationCanceledException();
     }
-    return false;
   }
 
   @Override
