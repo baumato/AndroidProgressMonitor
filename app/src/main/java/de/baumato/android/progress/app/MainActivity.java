@@ -12,6 +12,9 @@
 
 package de.baumato.android.progress.app;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -21,8 +24,11 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import de.baumato.android.progress.OperationCanceledException;
 import de.baumato.android.progress.ProgressMonitor;
+import de.baumato.android.progress.SubMonitor;
 import de.baumato.android.progress.ui.ProgressBarMonitor;
+import de.baumato.android.progress.ui.ProgressDialogMonitor;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
 
     Button btnStop = (Button) findViewById(R.id.btnStop);
     btnStop.setOnClickListener(new StopButtonListener());
+
+    Button btnProgressDialog = (Button) findViewById(R.id.btnProgressDialog);
+    btnProgressDialog.setOnClickListener(new ShowProgressDialogListener());
   }
 
   /**
@@ -114,6 +123,60 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onClick(View v) {
       progressMonitor.setCanceled(true);
+    }
+  }
+
+  private class ShowProgressDialogListener implements View.OnClickListener {
+
+    @Override
+    public void onClick(View v) {
+
+    }
+  }
+
+  private class ProgressDialogTask extends AsyncTask<Void, Void, Void> {
+    private final ProgressDialog dialog;
+    private final ProgressMonitor monitor;
+
+    public ProgressDialogTask(MainActivity activity) {
+      dialog = new ProgressDialog(activity);
+      dialog.setTitle("ProgressDialog");
+      dialog.setMessage("Loading...");
+      dialog.setIndeterminate(true);
+      dialog.setCancelable(true);
+      dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        @Override
+        public void onCancel(DialogInterface dialog) {
+          monitor.setCanceled(true);
+        }
+      });
+      this.monitor = ProgressDialogMonitor.of(dialog);
+    }
+
+    @Override
+    protected void onPreExecute() {
+      dialog.show();
+    }
+
+    @Override
+    protected void onPostExecute(Void result) {
+      if (dialog.isShowing()) {
+        dialog.dismiss();
+      }
+    }
+
+    @Override
+    protected Void doInBackground(Void... params) {
+      try {
+        SubMonitor progress = SubMonitor.convert(monitor, "Loading...", 20);
+        for (int i = 0; i < 20; i++) {
+          ExampleUtil.simulateHardWorkByWaitingMillis(500);
+          progress.split(1);
+        }
+        return null;
+      } catch (OperationCanceledException e) {
+
+      }
     }
   }
 }

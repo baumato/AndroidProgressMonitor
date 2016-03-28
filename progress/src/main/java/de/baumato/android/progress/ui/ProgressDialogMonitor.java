@@ -4,17 +4,18 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * <p>
+ *
  * Contributors:
  *     Tobias Baumann - initial API and implementation
+ *
  */
+
 package de.baumato.android.progress.ui;
 
+import android.app.ProgressDialog;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import de.baumato.android.progress.ProgressMonitor;
 
@@ -23,22 +24,18 @@ import static de.baumato.android.progress.ProgressMonitorUtil.checkNotNull;
 import static de.baumato.android.progress.ProgressMonitorUtil.isMainThread;
 import static de.baumato.android.progress.ProgressMonitorUtil.nullToEmpty;
 
-
 /**
- * This ProgressMonitor implementation wraps an ProgressBar and optionally a TextView
- * to show task and subtask names. This implementation of ProgressMonitor allows to monitor
- * progress more than once with the same instance.
+ * This ProgressMonitor implementation wraps a ProgressDialog.
  * All ProgressMonitor methods may be called from any thread, every call gets transferred to
  * the main thread.
  * For monitoring progress of an activity that is not trivial the SubMonitor should be used.
  *
  * @see de.baumato.android.progress.SubMonitor
  */
-public class ProgressBarMonitor implements ProgressMonitor {
+public class ProgressDialogMonitor implements ProgressMonitor {
 
   private final Handler handler;
-  private final ProgressBar progressBar;
-  private final TextView messageTextView;
+  private final ProgressDialog progressDialog;
 
   private long startTime = -1;
   private long durationInMillis = -1;
@@ -49,55 +46,33 @@ public class ProgressBarMonitor implements ProgressMonitor {
   private volatile boolean canceled;
 
   /**
-   * Creates and returns a new ProgressBarMonitor that wraps the given progress bar.
+   * Creates and returns a new ProgressDialogMonitor that wraps the given progress dialog.
    *
-   * @param progressBar the progress bar to wrap
+   * @param progressDialog the progress dialog to wrap
    * @return a new ProgressBarMonitor instance
    */
-  public static ProgressBarMonitor of(ProgressBar progressBar) {
-    return new ProgressBarMonitor(progressBar, null);
+  public static ProgressDialogMonitor of(ProgressDialog progressDialog) {
+    return new ProgressDialogMonitor(progressDialog);
   }
 
   /**
-   * Creates and returns a new ProgressBarMonitor that wraps the given progress bar and text view.
+   * Constructs a new ProgressDialogMonitor.
    *
-   * @param progressBar     the progress bar to wrap.
-   * @param messageTextView the text view to show the task and subtask names
-   * @return a new ProgressBarMonitor instance.
+   * @param progressDialog the ProgressBar to show the activities progress, not null
    */
-  public static ProgressBarMonitor of(ProgressBar progressBar, TextView messageTextView) {
-    return new ProgressBarMonitor(progressBar, messageTextView);
-  }
-
-  /**
-   * Constructs a new ProgressBarMonitor.
-   *
-   * @param pb  the ProgressBar to show the activities progress, not null
-   * @param txt the TextView to show the current task name, may be null
-   */
-  private ProgressBarMonitor(ProgressBar pb, TextView txt) {
+  private ProgressDialogMonitor(ProgressDialog progressDialog) {
     this.handler = new Handler(Looper.getMainLooper());
     //checkIsMainThread();
-    this.progressBar = checkNotNull(pb, "Given progress bar must not be null.");
-    this.messageTextView = txt;
+    this.progressDialog = checkNotNull(progressDialog, "Given ProgressDialog must not be null.");
   }
 
   /**
-   * Returns the progress bar given in the constructor. Should only be called from the main thread.
+   * Returns the ProgressDialog given in the constructor. Should only be called from the main thread.
    *
    * @return the progress bar
    */
-  public ProgressBar getProgressBar() {
-    return this.progressBar;
-  }
-
-  /**
-   * Return the text view given in the constructor. Should only be called from the main thread.
-   *
-   * @return the text view
-   */
-  public TextView getMessageTextView() {
-    return this.messageTextView;
+  public ProgressDialog getProgressDialog() {
+    return this.progressDialog;
   }
 
   /**
@@ -157,10 +132,10 @@ public class ProgressBarMonitor implements ProgressMonitor {
     this.durationInMillis = -1;
     this.startTime = System.currentTimeMillis();
     final boolean indeterminate = (totalWork == UNKNOWN || totalWork == 0);
-    progressBar.setIndeterminate(indeterminate);
+    progressDialog.setIndeterminate(indeterminate);
     if (!indeterminate) {
-      progressBar.setProgress(0);
-      progressBar.setMax(totalWork);
+      progressDialog.setProgress(0);
+      progressDialog.setMax(totalWork);
     }
     setTaskNameInMainThread(name);
   }
@@ -189,10 +164,10 @@ public class ProgressBarMonitor implements ProgressMonitor {
   }
 
   private void updateMessageTextView() {
-    if (messageTextView != null && !currentTaskName.equals(fullTaskName)) {
+    if (!currentTaskName.equals(fullTaskName)) {
       Log.d(ProgressBarMonitor.class.getName(), "updateMessageTextView with " + fullTaskName);
       this.currentTaskName = fullTaskName;
-      this.messageTextView.setText(currentTaskName);
+      this.progressDialog.setMessage(currentTaskName);
     }
   }
 
@@ -243,7 +218,7 @@ public class ProgressBarMonitor implements ProgressMonitor {
   private void doneInMainThread() {
     this.durationInMillis = System.currentTimeMillis() - startTime;
     this.startTime = -1;
-    this.progressBar.setProgress(progressBar.getMax());
+    this.progressDialog.setProgress(progressDialog.getMax());
     setTaskNameInMainThread(null);
     updateMessageTextView();
   }
@@ -295,9 +270,9 @@ public class ProgressBarMonitor implements ProgressMonitor {
   }
 
   private void workedInMainThread(int work) {
-    String msg = "workedInMainThread with " + progressBar.getProgress() + "/" + progressBar.getMax();
+    String msg = "workedInMainThread with " + progressDialog.getProgress() + "/" + progressDialog.getMax();
     Log.d(ProgressBarMonitor.class.getName(), msg);
     updateMessageTextView();
-    progressBar.incrementProgressBy(work);
+    progressDialog.incrementProgressBy(work);
   }
 }
