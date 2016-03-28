@@ -32,7 +32,8 @@ android {
 }
 
 dependencies {
-    compile 'de.baumato.android.progress:progress:+@aar'
+    compile project(path: ':progress')
+    //compile 'de.baumato.android.progress:progress:+@aar' for other projects
     compile 'com.android.support:appcompat-v7:23.1.1'
     testCompile 'junit:junit:4.12'
     androidTestCompile 'junit:junit:4.12'

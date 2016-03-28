@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import de.baumato.android.progress.OperationCanceledException;
 import de.baumato.android.progress.ProgressMonitor;
@@ -130,53 +131,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onClick(View v) {
-
+      ProgressDialogTask task = new ProgressDialogTask(MainActivity.this);
+      task.execute();
     }
   }
 
-  private class ProgressDialogTask extends AsyncTask<Void, Void, Void> {
-    private final ProgressDialog dialog;
-    private final ProgressMonitor monitor;
-
-    public ProgressDialogTask(MainActivity activity) {
-      dialog = new ProgressDialog(activity);
-      dialog.setTitle("ProgressDialog");
-      dialog.setMessage("Loading...");
-      dialog.setIndeterminate(true);
-      dialog.setCancelable(true);
-      dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-        @Override
-        public void onCancel(DialogInterface dialog) {
-          monitor.setCanceled(true);
-        }
-      });
-      this.monitor = ProgressDialogMonitor.of(dialog);
-    }
-
-    @Override
-    protected void onPreExecute() {
-      dialog.show();
-    }
-
-    @Override
-    protected void onPostExecute(Void result) {
-      if (dialog.isShowing()) {
-        dialog.dismiss();
-      }
-    }
-
-    @Override
-    protected Void doInBackground(Void... params) {
-      try {
-        SubMonitor progress = SubMonitor.convert(monitor, "Loading...", 20);
-        for (int i = 0; i < 20; i++) {
-          ExampleUtil.simulateHardWorkByWaitingMillis(500);
-          progress.split(1);
-        }
-        return null;
-      } catch (OperationCanceledException e) {
-
-      }
-    }
-  }
 }
