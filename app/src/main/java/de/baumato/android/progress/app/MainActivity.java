@@ -43,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
           R.id.rbSubMonitorSimple,
           R.id.rbCondition,
           R.id.rbLoop,
-          R.id.rbUnknownLoop};
+          R.id.rbUnknownLoop,
+          R.id.rbProgressDialog};
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +61,6 @@ public class MainActivity extends AppCompatActivity {
 
     Button btnStop = (Button) findViewById(R.id.btnStop);
     btnStop.setOnClickListener(new StopButtonListener());
-
-    Button btnProgressDialog = (Button) findViewById(R.id.btnProgressDialog);
-    btnProgressDialog.setOnClickListener(new ShowProgressDialogListener());
   }
 
   /**
@@ -97,6 +95,10 @@ public class MainActivity extends AppCompatActivity {
 
         case R.id.rbUnknownLoop:
           new UnknownNumberOfElementsExample(progressMonitor).execute();
+          break;
+
+        case R.id.rbProgressDialog:
+          new ProgressDialogTask(MainActivity.this).execute();
           break;
 
         default:

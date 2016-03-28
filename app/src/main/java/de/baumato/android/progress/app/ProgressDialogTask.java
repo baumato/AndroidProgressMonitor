@@ -12,6 +12,7 @@
 
 package de.baumato.android.progress.app;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
@@ -28,7 +29,7 @@ class ProgressDialogTask extends AsyncTask<Void, Void, Void> {
   private final ProgressDialog dialog;
   private final ProgressMonitor monitor;
 
-  public ProgressDialogTask(MainActivity activity) {
+  public ProgressDialogTask(Activity activity) {
     dialog = new ProgressDialog(activity);
     dialog.setTitle("ProgressDialog");
     dialog.setMessage("Loading...");
