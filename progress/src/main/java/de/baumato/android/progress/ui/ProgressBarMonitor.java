@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import de.baumato.android.progress.ProgressMonitor;
 
-import static de.baumato.android.progress.ProgressMonitorUtil.checkIsMainThread;
 import static de.baumato.android.progress.ProgressMonitorUtil.checkNotNull;
 import static de.baumato.android.progress.ProgressMonitorUtil.isMainThread;
 import static de.baumato.android.progress.ProgressMonitorUtil.nullToEmpty;
@@ -40,12 +39,11 @@ public class ProgressBarMonitor implements ProgressMonitor {
   private final ProgressBar progressBar;
   private final TextView messageTextView;
 
-  private long startTime = -1;
-  private long durationInMillis = -1;
   private String mainTaskName = "";
   private String fullTaskName = "";
   private String currentTaskName = "";
 
+  private volatile Stopwatch stopwatch = new Stopwatch();
   private volatile boolean canceled;
 
   /**
@@ -77,7 +75,6 @@ public class ProgressBarMonitor implements ProgressMonitor {
    */
   private ProgressBarMonitor(ProgressBar pb, TextView txt) {
     this.handler = new Handler(Looper.getMainLooper());
-    //checkIsMainThread();
     this.progressBar = checkNotNull(pb, "Given progress bar must not be null.");
     this.messageTextView = txt;
   }
@@ -101,15 +98,14 @@ public class ProgressBarMonitor implements ProgressMonitor {
   }
 
   /**
-   * Returns the duration of the last activity measured from #beginTask to #done in milliseconds.
-   * Returns -1 if no duration has been measured yet. Must be called from the main thread.
+   * Returns the duration of the last activity measured from #beginTask to the current time
+   * in milliseconds. If #done already has been called the duration gets not updated anymore.
+   * This method returns -1 if no activity has been started with #beginTask yet.
    *
    * @return the duration in milliseconds
-   * @throws IllegalStateException if not called from the main thread
    */
   public long getDurationInMillis() {
-    checkIsMainThread();
-    return this.durationInMillis;
+    return stopwatch.getDurationInMillis();
   }
 
   /**
@@ -134,6 +130,7 @@ public class ProgressBarMonitor implements ProgressMonitor {
    */
   @Override
   public void beginTask(final String name, final int totalWork) {
+    stopwatch = new Stopwatch().start();
     runOnMainThread(new Runnable() {
       @Override
       public void run() {
@@ -154,8 +151,6 @@ public class ProgressBarMonitor implements ProgressMonitor {
   }
 
   private void beginTaskInMainThread(String name, int totalWork) {
-    this.durationInMillis = -1;
-    this.startTime = System.currentTimeMillis();
     final boolean indeterminate = (totalWork == UNKNOWN || totalWork == 0);
     progressBar.setIndeterminate(indeterminate);
     if (!indeterminate) {
@@ -232,6 +227,7 @@ public class ProgressBarMonitor implements ProgressMonitor {
    */
   @Override
   public void done() {
+    stopwatch = stopwatch.stop();
     runOnMainThread(new Runnable() {
       @Override
       public void run() {
@@ -241,8 +237,6 @@ public class ProgressBarMonitor implements ProgressMonitor {
   }
 
   private void doneInMainThread() {
-    this.durationInMillis = System.currentTimeMillis() - startTime;
-    this.startTime = -1;
     this.progressBar.setProgress(progressBar.getMax());
     setTaskNameInMainThread(null);
     updateMessageTextView();
@@ -300,4 +294,5 @@ public class ProgressBarMonitor implements ProgressMonitor {
     updateMessageTextView();
     progressBar.incrementProgressBy(work);
   }
+
 }

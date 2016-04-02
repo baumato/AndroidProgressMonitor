@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
   private static final String LOG_TAG = MainActivity.class.getName();
 
-  ProgressMonitor progressMonitor;
+  ProgressBarMonitor progressMonitor;
   TextView txtMsg;
   ProgressBar progressBar;
   final int[] radioButtonIds = new int[]{

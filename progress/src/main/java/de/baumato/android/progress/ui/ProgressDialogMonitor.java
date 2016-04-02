@@ -37,12 +37,11 @@ public class ProgressDialogMonitor implements ProgressMonitor {
   private final Handler handler;
   private final ProgressDialog progressDialog;
 
-  private long startTime = -1;
-  private long durationInMillis = -1;
   private String mainTaskName = "";
   private String fullTaskName = "";
   private String currentTaskName = "";
 
+  private volatile Stopwatch stopwatch = new Stopwatch();
   private volatile boolean canceled;
 
   /**
@@ -62,7 +61,6 @@ public class ProgressDialogMonitor implements ProgressMonitor {
    */
   private ProgressDialogMonitor(ProgressDialog progressDialog) {
     this.handler = new Handler(Looper.getMainLooper());
-    //checkIsMainThread();
     this.progressDialog = checkNotNull(progressDialog, "Given ProgressDialog must not be null.");
   }
 
@@ -76,15 +74,15 @@ public class ProgressDialogMonitor implements ProgressMonitor {
   }
 
   /**
-   * Returns the duration of the last activity measured from #beginTask to #done in milliseconds.
-   * Returns -1 if no duration has been measured yet. Must be called from the main thread.
+   * Returns the duration of the last activity measured from #beginTask to the current time
+   * in milliseconds. If #done already has been called the duration gets not updated anymore.
+   * This method returns -1 if no activity has been started with #beginTask yet.
    *
    * @return the duration in milliseconds
-   * @throws IllegalStateException if not called from the main thread
    */
   public long getDurationInMillis() {
-    checkIsMainThread();
-    return this.durationInMillis;
+    return stopwatch.getDurationInMillis();
+
   }
 
   /**
@@ -109,6 +107,7 @@ public class ProgressDialogMonitor implements ProgressMonitor {
    */
   @Override
   public void beginTask(final String name, final int totalWork) {
+    stopwatch = new Stopwatch().start();
     runOnMainThread(new Runnable() {
       @Override
       public void run() {
@@ -129,8 +128,6 @@ public class ProgressDialogMonitor implements ProgressMonitor {
   }
 
   private void beginTaskInMainThread(String name, int totalWork) {
-    this.durationInMillis = -1;
-    this.startTime = System.currentTimeMillis();
     final boolean indeterminate = (totalWork == UNKNOWN || totalWork == 0);
     progressDialog.setIndeterminate(indeterminate);
     if (!indeterminate) {
@@ -207,6 +204,7 @@ public class ProgressDialogMonitor implements ProgressMonitor {
    */
   @Override
   public void done() {
+    stopwatch = stopwatch.stop();
     runOnMainThread(new Runnable() {
       @Override
       public void run() {
@@ -216,8 +214,6 @@ public class ProgressDialogMonitor implements ProgressMonitor {
   }
 
   private void doneInMainThread() {
-    this.durationInMillis = System.currentTimeMillis() - startTime;
-    this.startTime = -1;
     this.progressDialog.setProgress(progressDialog.getMax());
     setTaskNameInMainThread(null);
     updateMessageTextView();

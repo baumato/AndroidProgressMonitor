@@ -13,9 +13,11 @@
 package de.baumato.android.progress.app;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import de.baumato.android.progress.OperationCanceledException;
 import de.baumato.android.progress.ProgressMonitor;
+import de.baumato.android.progress.ui.ProgressBarMonitor;
 
 import static de.baumato.android.progress.app.ExampleUtil.simulateHardWork;
 
@@ -33,9 +35,9 @@ import static de.baumato.android.progress.app.ExampleUtil.simulateHardWork;
  */
 class SimpleExample extends AsyncTask<Void, Void, String> {
 
-  private final ProgressMonitor monitor;
+  private final ProgressBarMonitor monitor;
 
-  SimpleExample(ProgressMonitor monitor) {
+  SimpleExample(ProgressBarMonitor monitor) {
     this.monitor = monitor;
   }
 
@@ -60,6 +62,8 @@ class SimpleExample extends AsyncTask<Void, Void, String> {
 
         // Notify that another 10% of the work is done.
         monitor.worked(10);
+
+        Log.i(SimpleExample.class.getSimpleName(), "Duration after step " + i + ": " + monitor.getDurationInMillis() + "ms");
       }
       return "done";
 
@@ -69,6 +73,7 @@ class SimpleExample extends AsyncTask<Void, Void, String> {
     } finally {
       // Notifies that the work is done;that is, either the main task is completed or the user canceled it.
       monitor.done();
+      Log.i(SimpleExample.class.getSimpleName(), "Duration: " + monitor.getDurationInMillis() + "ms");
     }
   }
 }
