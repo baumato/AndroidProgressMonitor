@@ -69,11 +69,11 @@ public class LoopExample extends AsyncTask<Void, Void, String> {
 
   private String doSomethingElse(SubMonitor progress) {
     simulateHardWork();
-    progress.worked(10);
+    progress.step(10);
     simulateHardWork();
-    progress.worked(10);
+    progress.step(10);
     simulateHardWork();
-    progress.worked(10);
+    progress.step(10);
     return "done";
   }
 }

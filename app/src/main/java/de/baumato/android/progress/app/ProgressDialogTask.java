@@ -64,7 +64,7 @@ class ProgressDialogTask extends AsyncTask<Void, Void, Void> {
       for (int i = 0; i < 20; i++) {
         if (i % 5 == 0) progress.subTask("SubTask " + i);
         ExampleUtil.simulateHardWorkByWaitingMillis(500);
-        progress.split(1);
+        progress.step(1);
       }
     } catch (OperationCanceledException e) {
       toast("Cancelled.");

@@ -19,7 +19,6 @@ import de.baumato.android.progress.ProgressMonitor;
 import de.baumato.android.progress.SubMonitor;
 
 import static de.baumato.android.progress.app.ExampleUtil.simulateHardWork;
-import static de.baumato.android.progress.app.ExampleUtil.simulateHardWorkByWaitingMillis;
 
 /**
  * <p>
@@ -51,8 +50,9 @@ class SimpleSubMonitorExample extends AsyncTask<Void, Void, String> {
       // Use newChild if you do not want to allow cancellations.
       doSomething(progress.split(30));
 
-      // Advance the monitor by another 30%.
-      progress.worked(30);
+      // Advance the monitor by another 30% and check for cancellation.
+      // Use progress.worked if you do not want to allow cancellations.
+      progress.step(30);
 
       // Use the remaining 40% of the progress to do some more work.
       return doSomethingElse(progress.split(40));
@@ -68,17 +68,17 @@ class SimpleSubMonitorExample extends AsyncTask<Void, Void, String> {
 
   private void doSomething(SubMonitor progress) {
     simulateHardWork();
-    progress.worked(10);
+    progress.step(10);
     simulateHardWork();
-    progress.worked(10);
+    progress.step(10);
     simulateHardWork();
-    progress.worked(10);
+    progress.step(10);
   }
 
   private String doSomethingElse(SubMonitor progress) {
     doSomething(progress);
     simulateHardWork();
-    progress.worked(10);
+    progress.step(10);
     return "done";
   }
 }

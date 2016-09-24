@@ -51,7 +51,7 @@ class UnknownNumberOfElementsExample extends AsyncTask<Void, Void, String> {
       Iterator<String> unknownNumberOfElemsIter = createIterator();
 
       // creating the iterator is 10% of the task.
-      progress.worked(10);
+      progress.step(10);
 
       // looping thru the unknown number of elements is 80% of the work.
       SubMonitor loopProgress = progress.split(80);
