@@ -55,6 +55,7 @@ task generateSourcesJar(type: Jar) {
 }
 
 task generateJavaDocs(type: Javadoc) {
+    failOnError = false
     source = android.sourceSets.main.java.srcDirs
     classpath += project.files(android.getBootClasspath()
             .join(File.pathSeparator))
