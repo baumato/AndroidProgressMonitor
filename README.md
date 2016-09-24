@@ -203,7 +203,7 @@ protected String doInBackground(Void... params) {
 or add following line to your dependencies in your app's build.gradle file (it is available in jcenter):
 
 ```gradle
-compile 'de.baumato.android.progress:progress:1.2.0@aar'
+compile 'de.baumato.android.progress:progress:1.3.0@aar'
 ```
 
 ## License
